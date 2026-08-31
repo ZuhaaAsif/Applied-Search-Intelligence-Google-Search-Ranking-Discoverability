@@ -1,0 +1,17 @@
+{
+  "month": "2026-03",
+  "total_pages_scored": 101424,
+  "pages_flagged": 68652,
+  "reason_code_counts": {
+    "ctr_below_tier_expectation": 27764,
+    "high_rank_low_ctr": 24041,
+    "aging_and_ctr_gap": 16847
+  },
+  "position_bug_rows_affected_pct": 2.7,
+  "position_bug_items_affected_pct": 38.7,
+  "zero_ctr_share_pct": 27.6,
+  "ml09_grouped_precision_at_20": 0.95,
+  "ml09_grouped_precision_at_50": 0.9,
+  "ml09_grouped_base_rate": 0.685,
+  "ml09_test_clients": 10
+}
