@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Which Pages Are Underperforming Their Search Position? — CTR Opportunity Scoring on 9.8M Search Rows</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --paper:#FAF7F1;
+    --ink:#20241F;
+    --ink-soft:#4A5049;
+    --ochre:#B8792B;
+    --teal:#3B6B63;
+    --rule:#DAD4C5;
+    --rule-soft:#EAE6DA;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    font-size:17px;
+  }
+  .wrap{max-width:720px; margin:0 auto; padding:0 24px;}
+  h1,h2,h3{
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    line-height:1.2;
+    color:var(--ink);
+  }
+  h1{font-size:2.6rem; margin:0 0 .3em 0;}
+  h2{font-size:1.6rem; margin:2.6em 0 .6em 0; padding-top:.6em; border-top:1px solid var(--rule);}
+  h3{font-size:1.15rem; margin:1.6em 0 .5em 0; font-weight:600;}
+  p{margin:0 0 1.1em 0; max-width:68ch;}
+  .lede{font-size:1.05rem; color:var(--ink-soft); max-width:62ch;}
+  a{color:var(--teal);}
+  a:hover{color:var(--ochre);}
+  code, .mono{font-family:'IBM Plex Mono', monospace; font-size:.9em;}
+  .cover{padding:64px 0 20px 0;}
+  .meta{color:var(--ink-soft); font-size:.95rem; margin-bottom:1.6em;}
+  .meta span{margin-right:1.2em;}
+  .abstract-box{
+    background:var(--rule-soft);
+    border-left:3px solid var(--ochre);
+    padding:20px 24px;
+    margin:1.6em 0 2.4em 0;
+    font-size:.98rem;
+  }
+  .abstract-box h3{margin-top:0;}
+  .stat-row{display:flex; flex-wrap:wrap; gap:28px; margin:1.2em 0 1.8em 0;}
+  .stat{min-width:130px;}
+  .stat .num{font-family:'Source Serif 4', serif; font-size:1.7rem; font-weight:700; color:var(--ochre);}
+  .stat .label{font-size:.85rem; color:var(--ink-soft);}
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:1.2em 0 .5em 0;
+    font-size:.92rem;
+  }
+  th, td{
+    text-align:left;
+    padding:8px 10px;
+    border-bottom:1px solid var(--rule);
+  }
+  th{font-weight:600; color:var(--ink-soft); font-size:.8rem;}
+  tr:first-child th{border-bottom:1.5px solid var(--ink-soft);}
+  .caption{font-size:.85rem; color:var(--ink-soft); margin-top:.4em; margin-bottom:2em;}
+  figure{margin:1.6em 0;}
+  figure img{width:100%; height:auto; border:1px solid var(--rule); border-radius:2px;}
+  .callout{
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:16px 20px;
+    margin:1.4em 0;
+    background:#fff;
+  }
+  .callout.limit{border-left:3px solid var(--ink-soft);}
+  .callout.finding{border-left:3px solid var(--teal);}
+  ul, ol{padding-left:1.3em;}
+  li{margin-bottom:.5em;}
+  .queue-list{list-style:none; padding-left:0;}
+  .queue-list li{
+    border-bottom:1px solid var(--rule-soft);
+    padding:10px 0;
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    align-items:baseline;
+  }
+  .queue-list .code{color:var(--teal); font-size:.85rem;}
+  .queue-list .count{color:var(--ink-soft); font-size:.85rem; white-space:nowrap;}
+  footer{
+    margin-top:4em;
+    padding:28px 0 60px 0;
+    border-top:1px solid var(--rule);
+    color:var(--ink-soft);
+    font-size:.9rem;
+  }
+  footer a{font-weight:500;}
+  @media (max-width:600px){
+    body{font-size:16px;}
+    h1{font-size:2rem;}
+    .stat-row{gap:20px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section class="cover">
+    <div class="meta"><span>Search Intelligence · Independent Study</span><span>April 2026 · March 2026 Data Slice</span></div>
+    <h1>Which Pages Are Underperforming Their Search Position?</h1>
+    <p class="lede">A CTR opportunity-scoring study on 9.84 million rows of real search-performance data — where a transparent rule holds its own against a learned model, and one data-quality bug nearly wasn't caught.</p>
+
+    <div class="abstract-box">
+      <h3>Abstract</h3>
+      <p>Which pages are earning fewer clicks than their search ranking should predict, and how confidently can that gap be ranked for a content team with limited review time? Built on FlyRank's internship warehouse — 9.84 million daily search-performance rows across pseudonymized clients for March 2026 — this study defines a page's opportunity as the gap between its actual click-through rate and the average CTR of pages at a comparable search position. A transparent rule-based baseline and two learned classifiers (logistic regression, random forest) were each validated against a held-out set of clients the model never trained on, guarding against a model that memorizes a client's quirks rather than a real pattern. Under that honest split, the transparent baseline (precision@50 = 0.98) matched or beat the random forest (0.96) at the widest review size, while the forest only edged ahead at a narrower, more selective cutoff (1.00 vs 0.95 at precision@20) — a genuinely mixed result, not a clean win for complexity. The output is a ranked, reason-coded action queue intended as a weekly shortlist for human content reviewers, not an autonomous system — alongside an honest account of a real data-quality bug this study found and corrected along the way.</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><div class="num">9.84M</div><div class="label">rows, March 2026</div></div>
+      <div class="stat"><div class="num">101,424</div><div class="label">pages scored</div></div>
+      <div class="stat"><div class="num">68,652</div><div class="label">pages flagged for review</div></div>
+      <div class="stat"><div class="num">2.7%</div><div class="label">rows with a corrected data bug</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Introduction</h2>
+    <p>A content reviewer sitting down on a Monday morning has a few hours and a site with over a hundred thousand pages. Some of those pages rank well but earn almost no clicks — a title that doesn't match what searchers expect, a snippet that undersells the page, or a spot where a competing result quietly took the click. Others rank well <em>and</em> click well: nothing to touch. The reviewer's real constraint isn't finding problems — it's finding the right <em>few</em> problems first, out of far too many pages to check by hand.</p>
+    <p>This study asks a narrower, checkable version of that question: given a page's search position and its click-through rate, can the size of the gap between "what CTR this position should earn" and "what CTR this page actually earns" be ranked well enough to serve as that reviewer's shortlist? And critically — does a learned model actually rank that gap better than a rule a human can read in one sentence?</p>
+  </section>
+
+  <section>
+    <h2>Data</h2>
+    <p>This study draws on FlyRank's internship data warehouse, released as pseudonymized Parquet on Hugging Face. The full release spans <strong>104 clients</strong>, <strong>519,606 content items</strong>, and <strong>78,835,655 daily performance rows</strong> from 2025-01-27 through 2026-06-30. All identifiers (client, content, keyword, URL) are scrambled hashes; no raw client names, domains, URLs, or query text are present anywhere in the release or in this study.</p>
+    <p>The analysis here uses a single mid-panel month — <strong>March 2026</strong> (2026-03-01 through 2026-03-31), <strong>9,841,378 rows</strong> — deliberately avoiding the release's final month, which is reserved as a sealed evaluation window by the data provider's own guidance and should never be used to develop label logic.</p>
+    <p>Two tables were joined: <code>fact_content_daily_performance</code> (the daily search-metric fact table) and <code>dim_content</code> (static content metadata — type and creation date). Rows were aggregated to one row per content item per month, requiring at least 100 impressions to qualify — low-traffic pages produce CTR estimates too noisy to trust.</p>
+    <p><strong>Explicitly excluded:</strong> FlyRank's own product-decision flags (health score, priority score, action type) were never used as inputs — including them as features would let a model simply learn to reproduce an existing rule rather than discover anything new. Engagement/GA4 fields were also excluded from the final feature set: in this slice, only 413,966 of 9,841,378 rows (4.2%) had real GA4 coverage, too thin to build a reliable feature on.</p>
+  </section>
+
+  <section>
+    <h2>Methodology</h2>
+    <h3>Unit of analysis and label</h3>
+    <p>One row is one content item's aggregated activity within March 2026. To build a genuine forward-looking test rather than a same-window measurement, the month was split at its midpoint: <strong>features are built only from the first 15 days</strong>; the <strong>label is defined on the second 15 days</strong> — whether a page's second-half CTR fell below the second-half average CTR for its position tier (five bins: positions 1–3, 4–10, 11–20, 21–50, and 51+, assigned using each page's <em>first-half</em> position only, so the tier assignment itself never peeks at the outcome window).</p>
+
+    <h3>A data-quality bug, found and corrected</h3>
+    <div class="callout finding">
+      <p style="margin-bottom:0;">Before position could be trusted as a feature, this study found that <strong>2.7% of impression-rows (264,737 of 9,841,378), affecting 38.7% of content items (68,425 of 176,738)</strong>, had a mathematically impossible position value — days where <code>gsc_sum_position</code> stayed flat while <code>gsc_impressions</code> spiked 20–100×, producing an average position under 1 (impossible, since rank 1 is the best real position). One example page's position moved from an impossible 0.67 to a corrected 8.08 once these rows were excluded — a real, page-level effect, not a rounding curiosity. All position calculations in this study use only rows where <code>gsc_sum_position ≥ gsc_impressions</code>, the condition that must hold for any genuine average position.</p>
+    </div>
+
+    <h3>Features and baseline</h3>
+    <p>Five first-half-only inputs: first-half impressions, first-half average position (impression-weighted, bug-corrected), first-half CTR, the first-half CTR gap against tier average, and content age in days, plus content type as a categorical feature. The transparent baseline scores each page as <code>underperforming × ctr_gap × impressions</code> — a plain multiply of readable conditions, with no fitted weights, computed using only first-half data so the baseline is never peeking at the outcome it's being compared against.</p>
+
+    <h3>Validation and leakage checks</h3>
+    <p>Pages from the same client were kept strictly on one side of the split (<code>GroupShuffleSplit</code> on client, not a plain random split) — random splits let a model memorize per-client quirks rather than learn a pattern that generalizes to clients it has never seen. As a direct test of the evaluation harness itself, the label-defining column (second-half CTR) was deliberately re-added as a feature: precision@20 jumped from 0.950 to a perfect 1.000, confirming the harness correctly detects leakage when it's present — the necessary check before trusting its absence elsewhere.</p>
+  </section>
+
+  <section>
+    <h2>Results</h2>
+    <p>All three methods clear the 0.685 base rate by a wide margin — real signal, not luck. The result is mixed, not a clean win for the learned model:</p>
+
+    <table>
+      <tr><th>Method</th><th>Precision@20</th><th>Precision@50</th><th>Base rate</th></tr>
+      <tr><td>Baseline rule</td><td>0.95</td><td><strong>0.98</strong></td><td>0.685</td></tr>
+      <tr><td>Logistic Regression</td><td>0.90</td><td>0.84</td><td>0.685</td></tr>
+      <tr><td>Random Forest</td><td><strong>1.00</strong></td><td>0.96</td><td>0.685</td></tr>
+    </table>
+    <p class="caption">Client-grouped split — 28 training clients, 10 held-out test clients, unseen during training.</p>
+
+    <figure>
+      <img src="figures/model_vs_baseline.png" alt="Bar chart comparing precision at 20 and precision at 50 for the baseline rule, logistic regression, and random forest, against a 0.685 base rate line.">
+      <p class="caption">Random Forest wins the narrower, most-selective cutoff; the transparent baseline wins the wider one. Neither result is discarded in favor of the other.</p>
+    </figure>
+
+    <p>The transparent baseline beats the random forest at precision@50 — per the skill this study followed, a depth-readable rule that performs this close to an opaque model doesn't automatically get replaced by the opaque one. Random Forest's top features were nearly evenly split (first-half position, impressions, and CTR gap each near 0.21–0.22 importance, content age at 0.14) — no single feature dominated, the opposite signature of a leaked feature. The model's highest error rate was in the 4–10 position tier (29.4%), and its most confident wrong calls were pages with near-zero first-half CTR that genuinely recovered in the second half — first-half zero is inherently ambiguous, and that ambiguity is exactly where the model struggled most.</p>
+
+    <div class="callout finding">
+      <p style="margin-bottom:0;"><strong>Why the scores are this high:</strong> pages already underperforming in the first half were underperforming again in the second half <strong>81.4%</strong> of the time, versus <strong>44.7%</strong> for pages that weren't gapping. CTR underperformance is a genuinely persistent, observable pattern within a month — which is the honest explanation for the high precision scores, not an artifact of the test.</p>
+    </div>
+
+    <h3>A validation robustness check</h3>
+    <p>A second experiment compared a deliberately naive random split (allowing the same client's pages in both train and test) against the honest grouped split, on the Random Forest alone. <strong>Disclosed limitation:</strong> this comparison used a reduced 4-feature set (the CTR-gap feature was inadvertently dropped from this run) and is not directly comparable, number-for-number, to the 5-feature table above.</p>
+    <table>
+      <tr><th>Split</th><th>Precision@20</th><th>Precision@50</th><th>Base rate</th><th>Test clients</th></tr>
+      <tr><td>Random (naive)</td><td>0.90</td><td>0.92</td><td>0.701</td><td>33</td></tr>
+      <tr><td>Grouped by client (honest)</td><td>0.95</td><td>0.90</td><td>0.685</td><td>10</td></tr>
+    </table>
+    <p class="caption">The grouped split did not score uniformly lower, which is itself informative — see Limitations for the honest read on why.</p>
+  </section>
+
+  <section>
+    <h2>Limitations &amp; honest framing</h2>
+    <div class="callout limit"><p style="margin-bottom:0;"><strong>Single month.</strong> Every result here comes from March 2026 alone. Nothing has been tested against a different month, a different season, or the sealed final-month holdout. Treat every number as "observed in March 2026," not as a stable year-round constant.</p></div>
+    <div class="callout limit"><p style="margin-bottom:0;"><strong>Small held-out group.</strong> The honest grouped split holds out only 10 whole clients. A precision@K estimate built from 10 groups carries real sampling variance — a different random seed could shift these numbers by several points. This is a genuine limit of one month's client count, not a hidden flaw.</p></div>
+    <div class="callout limit"><p style="margin-bottom:0;"><strong>Decision-support, not causal.</strong> Nothing in this study shows that rewriting a title or refreshing a page <em>causes</em> a CTR improvement — that requires a controlled experiment this cross-sectional data cannot provide. The correct reading of every ranked page is "worth a human look," not "confirmed broken."</p></div>
+    <div class="callout limit"><p style="margin-bottom:0;"><strong>Content type barely matters.</strong> In the validated model, content-type categories contributed less than 0.001 importance each — this study does not support claims that certain content types inherently underperform.</p></div>
+    <div class="callout limit"><p style="margin-bottom:0;"><strong>Methodology consistency.</strong> As disclosed above, the two model-comparison tables in this paper used slightly different feature sets across separate notebook runs. Treat the 5-feature table (Results, first table) as the primary reported comparison.</p></div>
+  </section>
+
+  <section>
+    <h2>Ranked recommendations</h2>
+    <p>Of 101,424 scored pages, <strong>68,652 (67.7%)</strong> cleared the CTR-gap threshold and were ranked into three reason-coded segments:</p>
+    <ul class="queue-list">
+      <li><span><strong>ctr_below_tier_expectation</strong> — the general case: real position and volume, CTR meaningfully below tier average.<br><span class="code">action: review_title_meta</span></span><span class="count">27,764 pages · 40.4%</span></li>
+      <li><span><strong>high_rank_low_ctr</strong> — good position, near-zero clicks, most likely a title/snippet problem.<br><span class="code">action: review_title_meta</span></span><span class="count">24,041 pages · 35.0%</span></li>
+      <li><span><strong>aging_and_ctr_gap</strong> — 270+ days old and gapping: decay compounding with a CTR problem.<br><span class="code">action: refresh_and_review_metadata</span></span><span class="count">16,847 pages · 24.5%</span></li>
+    </ul>
+
+    <h3>Before acting on any flagged page, a reviewer should check</h3>
+    <ul>
+      <li>Whether a search-results feature (a featured snippet, "People Also Ask") is capturing clicks regardless of this page's metadata quality.</li>
+      <li>Whether the page is branded or navigational, where low CTR is expected, not a problem.</li>
+      <li>Whether a sibling page on the same site absorbed the traffic — consolidation, not decline.</li>
+    </ul>
+
+    <h3>What should not be automated</h3>
+    <p>Auto-rewriting titles or metadata without human review — the score identifies candidates, not verified problems. Any action based on this single month without re-confirming the pattern holds in the current month. Merging or pruning pages on this queue alone, without the consolidation check above. Treating content-type differences as a rule, given their near-zero validated importance.</p>
+
+    <h3>Monitoring / re-check triggers</h3>
+    <p>Re-run the position-validity check monthly — a meaningful shift from the 2.7% baseline signals the underlying data pipeline may have changed. Re-run the grouped-split precision@K comparison monthly — a drop well below the 0.685–0.701 range seen here signals the tier-CTR pattern may no longer hold. Re-validate against a new month before trusting this queue past the month it was built on.</p>
+  </section>
+
+  <section>
+    <h2>Reproducibility</h2>
+    <p>Every step in this study — the data contract, the baseline, the model, the validation audit, and the action playbook — is a runnable, committed notebook in the project repository. All random processes use a fixed seed (<code>random_state=42</code>) for exact reproducibility.</p>
+    <ul>
+      <li><a href="https://github.com/ZuhaaAsif/Applied-Search-Intelligence-Google-Search-Ranking-Discoverability" target="_blank">Project repository</a></li>
+      <li><code>work/notebooks/w03_data_contract.ipynb</code> — data contract and verification queries</li>
+      <li><code>work/notebooks/w04_baseline_score.ipynb</code> — transparent baseline and signal checks</li>
+      <li><code>work/notebooks/w05_model.ipynb</code> — model training and baseline comparison</li>
+      <li><code>work/notebooks/w06_validation_audit.ipynb</code> — grouped-split audit and leakage checks</li>
+      <li><code>work/notebooks/w07_action_playbook.ipynb</code> — the ranked, reason-coded action queue</li>
+      <li><code>work/notebooks/capstone.ipynb</code> — this paper's source notebook</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Built on the <a href="https://flyrank.ai/" target="_blank">FlyRank ML Internship</a> dataset.</p>
+    <p>Independent study · Applied Search Intelligence track</p>
+  </footer>
+
+</div>
+</body>
+</html>
